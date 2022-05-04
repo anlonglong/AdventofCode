@@ -8,13 +8,13 @@ public class Solution {
         if (null == input) return score;
         if (input.isEmpty()) return score;
         for (String s : input) {
-            List<Character> list = new ArrayList<>();
+            List<Character> stack = new ArrayList<>();
             boolean exitLoop = false;
             for (char c : s.toCharArray()) {
                 if (c == '(' || c == '[' || c == '{' || c == '<') {
-                    list.add(c);
+                    stack.add(c);
                 } else {
-                    Character lastElement = list.remove(list.size() - 1);
+                    Character lastElement = stack.remove(stack.size() - 1);
                     if (c == ')' && lastElement != '(') {
                         score += 3;
                         exitLoop = true;
@@ -29,6 +29,7 @@ public class Solution {
                         exitLoop = true;
                     }
                 }
+                //Break inner  loop after Find the first illegal character
                 if (exitLoop) break;
             }
         }
@@ -41,17 +42,19 @@ public class Solution {
         if (input.isEmpty()) return 0;
         for (int i = input.size() - 1; i >= 0; i--) {
             String s = input.get(i);
-            List<Character> list = new ArrayList<>();
+            List<Character> stack = new ArrayList<>();
             for (char c : s.toCharArray()) {
                 if (c == '(' || c == '[' || c == '{' || c == '<') {
-                    list.add(c);
+                    stack.add(c);
                 } else if (c == ')' || c == ']' || c == '}' || c == '>') {
-                    list.remove(list.size() - 1);
+                    stack.remove(stack.size() - 1);
                 }
             }
+
+            //calculate score for each line
             long score = 0;
-            while (list.size() > 0) {
-                char c = list.remove(list.size() - 1);
+            while (stack.size() > 0) {
+                char c = stack.remove(stack.size() - 1);
                 score *= 5;
                 switch (c) {
                     case '(':
